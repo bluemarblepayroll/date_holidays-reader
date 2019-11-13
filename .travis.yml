@@ -15,3 +15,8 @@ before_install:
 script:
   - bundle exec rake spec
   - bundle exec rubocop
+addons:
+  # https://docs.travis-ci.com/user/uploading-artifacts/
+  artifacts:
+    paths:
+      - Gemfile.lock
