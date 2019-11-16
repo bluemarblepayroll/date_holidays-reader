@@ -3,10 +3,14 @@
  jobs:
    build:
      docker:
-       - image: circleci/ruby:2.6.5
+       - image: circleci/ruby:2.6.5-buster-node
      steps:
        - checkout
        - run: gem install bundler -v 2.0.2
        - run: bundle install --path vendor/bundle
+
        - run: bundle exec rubocop
+
+       - run: yarn
+       - run: bundle exec rake build
        - run: bundle exec rspec
