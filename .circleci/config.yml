@@ -7,7 +7,16 @@
      steps:
        - checkout
        - run: gem install bundler -v 2.0.2
+
+       - restore_cache:
+           key: v1.0.0-build-ruby-dependency-cache-{{ checksum "date_holidays-reader.gemspec" }}-{{ checksum "Gemfile" }}-{{ checksum ".tool-versions" }}-{{ arch }}
+
        - run: bundle install --path vendor/bundle
+
+       - save_cache:
+          key: v1.0.0-build-ruby-dependency-cache-{{ checksum "date_holidays-reader.gemspec" }}-{{ checksum "Gemfile" }}-{{ checksum ".tool-versions" }}-{{ arch }}
+          paths:
+            - vendor/bundle
 
        - run: bundle exec rubocop
 
