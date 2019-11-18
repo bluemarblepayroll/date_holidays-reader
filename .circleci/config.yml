@@ -10,9 +10,6 @@ jobs:
       - image: circleci/ruby:<< parameters.ruby-version >>-buster-node
     steps:
       - checkout
-      - run: gem install bundler -v 2.0.2
-
-      - run: grep ruby .tool-versions > /tmp/ruby-version
 
       - restore_cache:
           key: v0.0.1-build-ruby-dependency-cache-{{ checksum "date_holidays-reader.gemspec" }}-{{ checksum "Gemfile" }}-ruby-<< parameters.ruby-version >>-{{ arch }}
