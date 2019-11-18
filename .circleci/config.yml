@@ -14,22 +14,17 @@ jobs:
     steps:
       - checkout
 
-      # TODO: wrap bundler caching logic into an Orb:
-      - when:
-          condition: << parameters.use-bundler-cache >>
-          steps:
-            - restore_cache:
-                key: v0.0.1-bundler-cache-{{ checksum "date_holidays-reader.gemspec" }}-{{ checksum "Gemfile" }}-ruby-<< parameters.ruby-version >>-{{ arch }}
+      - run: ruby -v > .ruby-version
+
+      - restore_cache:
+          key: v0.0.1-bundler-cache-{{ arch }}-{{ checksum ".ruby-version" }}-{{ checksum "date_holidays-reader.gemspec" }}
 
       - run: bundle install --path vendor/bundle
 
-      - when:
-          condition: << parameters.use-bundler-cache >>
-          steps:
-            - save_cache:
-                key: v0.0.1-bundler-cache-{{ checksum "date_holidays-reader.gemspec" }}-{{ checksum "Gemfile" }}-ruby-<< parameters.ruby-version >>-{{ arch }}
-                paths:
-                  - vendor/bundle
+      - save_cache:
+          key: v0.0.1-bundler-cache-{{ arch }}-{{ checksum ".ruby-version" }}-{{ checksum "date_holidays-reader.gemspec" }}
+          paths:
+            - vendor/bundle
 
       - store_artifacts:
           path: Gemfile.lock
@@ -44,12 +39,12 @@ workflows:
   version: 2.1
   Build Multiple Ruby Versions:
     jobs:
-      - build:
-          name: Ruby 2.4
-          ruby-version: 2.4.9
-      - build:
-          name: Ruby 2.5
-          ruby-version: 2.5.7
+      # - build:
+      #     name: Ruby 2.4
+      #     ruby-version: 2.4.9
+      # - build:
+      #     name: Ruby 2.5
+      #     ruby-version: 2.5.7
       - build:
           name: Ruby 2.6
           ruby-version: 2.6.5
