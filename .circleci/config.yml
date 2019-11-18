@@ -1,27 +1,39 @@
- version: 2
+version: 2.1
 
- jobs:
-   build:
-     docker:
-       - image: circleci/ruby:2.6.5-buster-node
-     steps:
-       - checkout
-       - run: gem install bundler -v 2.0.2
+jobs:
+  build:
+    parameters:
+      ruby-version:
+        type: string
 
-       - run: grep ruby .tool-versions > /tmp/ruby-version
+    docker:
+      - image: circleci/ruby:<< parameters.ruby-version >>-buster-node
+    steps:
+      - checkout
+      - run: gem install bundler -v 2.0.2
 
-       - restore_cache:
-           key: v1.0.0-build-ruby-dependency-cache-{{ checksum "date_holidays-reader.gemspec" }}-{{ checksum "Gemfile" }}-{{ checksum "/tmp/ruby-version" }}-{{ arch }}
+      - run: grep ruby .tool-versions > /tmp/ruby-version
 
-       - run: bundle install --path vendor/bundle
+      - restore_cache:
+          key: v1.0.0-build-ruby-dependency-cache-{{ checksum "date_holidays-reader.gemspec" }}-{{ checksum "Gemfile" }}-{{ checksum "/tmp/ruby-version" }}-{{ arch }}
 
-       - save_cache:
-          key: v1.0.0-build-ruby-dependency-cache-{{ checksum "date_holidays-reader.gemspec" }}-{{ checksum "Gemfile" }}-{{ checksum "/tmp/ruby-version" }}-{{ arch }}t
-          paths:
-            - vendor/bundle
+      - run: bundle install --path vendor/bundle
 
-       - run: bundle exec rubocop
+      - save_cache:
+         key: v1.0.0-build-ruby-dependency-cache-{{ checksum "date_holidays-reader.gemspec" }}-{{ checksum "Gemfile" }}-{{ checksum "/tmp/ruby-version" }}-{{ arch }}t
+         paths:
+           - vendor/bundle
 
-       - run: yarn
-       - run: bundle exec rake build
-       - run: bundle exec rspec
+      - run: bundle exec rubocop
+
+      - run: yarn
+      - run: bundle exec rake build
+      - run: bundle exec rspec
+
+workflows:
+  version: 2.1
+  build:
+    jobs:
+      - build:
+          context: org-global
+          ruby-version: 2.6.5
