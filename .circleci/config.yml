@@ -5,21 +5,34 @@ jobs:
     parameters:
       ruby-version:
         type: string
+      use-bundler-cache:
+        type: boolean
+        default: true
 
     docker:
       - image: circleci/ruby:<< parameters.ruby-version >>-buster-node
     steps:
       - checkout
 
-      - restore_cache:
-          key: v0.0.1-build-ruby-dependency-cache-{{ checksum "date_holidays-reader.gemspec" }}-{{ checksum "Gemfile" }}-ruby-<< parameters.ruby-version >>-{{ arch }}
+      # TODO: wrap bundler caching logic into an Orb:
+      - when:
+          condition: << parameters.use-bundler-cache >>
+          steps:
+            - restore_cache:
+                key: v0.0.1-bundler-cache-{{ checksum "date_holidays-reader.gemspec" }}-{{ checksum "Gemfile" }}-ruby-<< parameters.ruby-version >>-{{ arch }}
 
       - run: bundle install --path vendor/bundle
 
-      - save_cache:
-         key: v0.0.1-build-ruby-dependency-cache-{{ checksum "date_holidays-reader.gemspec" }}-{{ checksum "Gemfile" }}-ruby-<< parameters.ruby-version >>-{{ arch }}
-         paths:
-           - vendor/bundle
+      - when:
+          condition: << parameters.use-bundler-cache >>
+          steps:
+            - save_cache:
+                key: v0.0.1-bundler-cache-{{ checksum "date_holidays-reader.gemspec" }}-{{ checksum "Gemfile" }}-ruby-<< parameters.ruby-version >>-{{ arch }}
+                paths:
+                  - vendor/bundle
+
+      - store_artifacts:
+          path: Gemfile.lock
 
       - run: bundle exec rubocop
 
@@ -40,3 +53,16 @@ workflows:
       - build:
           name: Ruby 2.6
           ruby-version: 2.6.5
+  Monthly Gem Dependency Refresh Check:
+    triggers:
+      - schedule:
+          cron: '0 0 18 * *' # TODO: update this to the first of the month before merging
+          filters:
+            branches:
+              only:
+                - circleci # TODO: change this to master before merging
+    jobs:
+      - build:
+          name: Ruby 2.6
+          ruby-version: 2.6.5
+          use-bundler-cache: false
