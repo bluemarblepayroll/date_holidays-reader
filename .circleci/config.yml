@@ -15,12 +15,12 @@ jobs:
       - run: grep ruby .tool-versions > /tmp/ruby-version
 
       - restore_cache:
-          key: v1.0.0-build-ruby-dependency-cache-{{ checksum "date_holidays-reader.gemspec" }}-{{ checksum "Gemfile" }}-{{ checksum "/tmp/ruby-version" }}-{{ arch }}
+          key: v0.0.1-build-ruby-dependency-cache-{{ checksum "date_holidays-reader.gemspec" }}-{{ checksum "Gemfile" }}-ruby-<< parameters.ruby-version >>-{{ arch }}
 
       - run: bundle install --path vendor/bundle
 
       - save_cache:
-         key: v1.0.0-build-ruby-dependency-cache-{{ checksum "date_holidays-reader.gemspec" }}-{{ checksum "Gemfile" }}-{{ checksum "/tmp/ruby-version" }}-{{ arch }}t
+         key: v0.0.1-build-ruby-dependency-cache-{{ checksum "date_holidays-reader.gemspec" }}-{{ checksum "Gemfile" }}-ruby-<< parameters.ruby-version >>-{{ arch }}
          paths:
            - vendor/bundle
 
@@ -34,5 +34,9 @@ workflows:
   version: 2.1
   build:
     jobs:
+      - build:
+          ruby-version: 2.4.9
+      - build:
+          ruby-version: 2.5.7
       - build:
           ruby-version: 2.6.5
