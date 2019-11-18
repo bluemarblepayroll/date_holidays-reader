@@ -35,5 +35,4 @@ workflows:
   build:
     jobs:
       - build:
-          context: org-global
           ruby-version: 2.6.5
