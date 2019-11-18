@@ -63,6 +63,6 @@ workflows:
                 - circleci # TODO: change this to master before merging
     jobs:
       - build:
-          name: Ruby 2.6
+          name: Ruby 2.6 Latest Gem Dependencies
           ruby-version: 2.6.5
           use-bundler-cache: false
