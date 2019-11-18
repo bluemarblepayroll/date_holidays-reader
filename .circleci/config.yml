@@ -32,11 +32,14 @@ jobs:
 
 workflows:
   version: 2.1
-  build:
+  Build Multiple Ruby Versions:
     jobs:
       - build:
+          name: Ruby 2.4
           ruby-version: 2.4.9
       - build:
+          name: Ruby 2.5
           ruby-version: 2.5.7
       - build:
+          name: Ruby 2.6
           ruby-version: 2.6.5
