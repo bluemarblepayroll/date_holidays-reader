@@ -14,7 +14,7 @@ jobs:
     steps:
       - checkout
 
-      - run: ruby -v > .ruby-version
+      - run: ruby -v | tee .ruby-version
 
       - restore_cache:
           key: v0.0.1-bundler-cache-{{ arch }}-{{ checksum ".ruby-version" }}-{{ checksum "date_holidays-reader.gemspec" }}
