@@ -55,16 +55,16 @@ workflows:
   Build Multiple Ruby Versions:
     jobs:
       - build:
-          name: Ruby 2.4
-          ruby-version: 2.4.9
-          context: org-global
-      - build:
           name: Ruby 2.5
           ruby-version: 2.5.7
           context: org-global
       - build:
           name: Ruby 2.6
           ruby-version: 2.6.5
+          context: org-global
+      - build:
+          name: Ruby 2.7
+          ruby-version: 2.7.0
           context: org-global
   Monthly Gem Dependency Refresh Check:
     triggers:
