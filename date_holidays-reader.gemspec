@@ -13,12 +13,17 @@ Gem::Specification.new do |spec|
 
   spec.summary       = 'A read-only Ruby wrapper for the date-holidays Node module'
   spec.description   = <<~DESCRIPTION
-    This provides a read-only interace over the data provided by the
+    This provides a read-only interface over the data provided by the
     date-holidays Node module available at https://github.com/commenthol/date-holidays .'
   DESCRIPTION
   spec.homepage = 'http://www.github.com/bluemarblepayroll/date_holidays-reader/'
-  spec.metadata['source_code_uri'] = 'https://github.com/bluemarblepayroll/date_holidays-reader'
-  spec.metadata['changelog_uri'] = 'https://github.com/bluemarblepayroll/date_holidays-reader/blob/master/CHANGELOG.md'
+  spec.metadata = {
+    'bug_tracker_uri' => 'https://github.com/bluemarblepayroll/date_holiday-reader/issues',
+    'changelog_uri' => 'https://github.com/bluemarblepayroll/date_holidays-reader/blob/master/CHANGELOG.md',
+    'documentation_uri' => 'https://www.rubydoc.info/gems/date_holidays-reader',
+    'homepage_uri' => spec.homepage,
+    'source_code_uri' => spec.homepage,
+  }
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
