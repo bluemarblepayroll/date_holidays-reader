@@ -14,7 +14,7 @@ Metrics/BlockLength:
     # The outer describe blocks throw this off for Rspec tests so disable.
     - spec/**/*_spec.rb
 
-Metrics/LineLength:
+Layout/LineLength:
   Max: 100
 
 Style/TrailingCommaInArguments:
