@@ -46,6 +46,9 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rspec', '~> 3.0'
   spec.add_development_dependency 'rspec_junit_formatter'
   spec.add_development_dependency 'rubocop', '~> 1.1'
+  # Be pessimistic since Sorbet is not yet at 1.0.
+  spec.add_development_dependency 'sorbet', '~> 0.5.6029'
+  spec.add_development_dependency 'sorbet-runtime', '~> 0.5.6029'
   spec.add_development_dependency 'terminal-notifier-guard'
 end
 # rubocop:enable Metrics/BlockLength
